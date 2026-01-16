@@ -48,7 +48,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 30px;
+            gap: 50px;
             overflow: hidden;
         }
 
@@ -59,23 +59,15 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(255, 0, 0, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 0, 0, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
-            perspective: 1000px;
-            transform-style: preserve-3d;
+                linear-gradient(rgba(255, 0, 0, 0.05) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.05) 2px, transparent 2px);
+            background-size: 100px 100px;
+            animation: gridScroll 30s linear infinite;
         }
 
-        @keyframes gridMove {
-            0% { 
-                transform: translateY(0) rotateX(60deg);
-                background-position: 0 0;
-            }
-            100% { 
-                transform: translateY(50px) rotateX(60deg);
-                background-position: 0 50px;
-            }
+        @keyframes gridScroll {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
         }
 
         .loading-grid::before {
@@ -85,48 +77,36 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to top, #000000, transparent);
+            background: radial-gradient(ellipse at center, transparent 20%, #000000 80%);
         }
 
         .loading-title {
             font-family: 'Audiowide', cursive;
-            font-size: 80px;
+            font-size: 100px;
             font-weight: 900;
-            letter-spacing: 15px;
-            background: linear-gradient(135deg, var(--red) 0%, var(--dark-red) 50%, var(--blood-red) 100%);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: loadingGradient 3s ease infinite, loading3D 2s ease-in-out infinite;
-            text-shadow: 0 0 80px rgba(255, 0, 0, 0.8);
-            transform-style: preserve-3d;
+            letter-spacing: 20px;
+            color: var(--red);
+            text-shadow: 0 0 50px rgba(255, 0, 0, 0.8), 0 0 100px rgba(255, 0, 0, 0.4);
+            animation: loadingTitlePulse 2s ease-in-out infinite;
             position: relative;
             z-index: 2;
         }
 
-        @keyframes loadingGradient {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        @keyframes loading3D {
+        @keyframes loadingTitlePulse {
             0%, 100% { 
-                transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
-            }
-            25% { 
-                transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
+                transform: scale(1);
+                text-shadow: 0 0 50px rgba(255, 0, 0, 0.8), 0 0 100px rgba(255, 0, 0, 0.4);
             }
             50% { 
-                transform: perspective(1000px) rotateX(0deg) rotateY(10deg);
-            }
-            75% { 
-                transform: perspective(1000px) rotateX(-5deg) rotateY(5deg);
+                transform: scale(1.05);
+                text-shadow: 0 0 80px rgba(255, 0, 0, 1), 0 0 150px rgba(255, 0, 0, 0.6);
             }
         }
 
+        /* Simple rotating ring */
         .globe-container {
-            width: 200px;
-            height: 200px;
+            width: 300px;
+            height: 300px;
             perspective: 1000px;
             position: relative;
             z-index: 2;
@@ -137,65 +117,73 @@
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            animation: globeRotate 20s linear infinite;
+            animation: globeSpin 8s linear infinite;
         }
 
-        @keyframes globeRotate {
-            from { transform: rotateY(0deg) rotateX(20deg); }
-            to { transform: rotateY(360deg) rotateX(20deg); }
+        @keyframes globeSpin {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
         }
 
         .globe-ring {
             position: absolute;
             top: 50%;
             left: 50%;
-            border: 2px solid var(--red);
+            border: 3px solid var(--red);
             border-radius: 50%;
             transform-style: preserve-3d;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.8), inset 0 0 30px rgba(255, 0, 0, 0.3);
         }
 
         .globe-ring:nth-child(1) {
-            width: 200px;
-            height: 200px;
-            margin: -100px 0 0 -100px;
-            transform: rotateX(0deg);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+            width: 300px;
+            height: 300px;
+            margin: -150px 0 0 -150px;
+            transform: rotateX(75deg);
+            animation: ringPulse1 3s ease-in-out infinite;
         }
 
         .globe-ring:nth-child(2) {
-            width: 180px;
-            height: 180px;
-            margin: -90px 0 0 -90px;
-            transform: rotateX(60deg);
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            width: 250px;
+            height: 250px;
+            margin: -125px 0 0 -125px;
+            transform: rotateY(75deg);
+            animation: ringPulse2 3s ease-in-out infinite 0.5s;
         }
 
         .globe-ring:nth-child(3) {
-            width: 180px;
-            height: 180px;
-            margin: -90px 0 0 -90px;
-            transform: rotateX(120deg);
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            width: 200px;
+            height: 200px;
+            margin: -100px 0 0 -100px;
+            transform: rotateX(45deg) rotateY(45deg);
+            animation: ringPulse3 3s ease-in-out infinite 1s;
         }
 
-        .globe-ring:nth-child(4) {
-            width: 160px;
-            height: 160px;
-            margin: -80px 0 0 -80px;
-            transform: rotateY(90deg);
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+        @keyframes ringPulse1 {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes ringPulse2 {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes ringPulse3 {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
         }
 
         .globe-core {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 30px;
-            height: 30px;
-            margin: -15px 0 0 -15px;
+            width: 40px;
+            height: 40px;
+            margin: -20px 0 0 -20px;
             background: var(--red);
             border-radius: 50%;
-            box-shadow: 0 0 40px rgba(255, 0, 0, 1), inset 0 0 20px rgba(255, 0, 0, 0.5);
+            box-shadow: 0 0 60px rgba(255, 0, 0, 1), inset 0 0 20px rgba(139, 0, 0, 0.8);
             animation: corePulse 2s ease-in-out infinite;
         }
 
@@ -259,6 +247,7 @@
             50% { opacity: 1; }
         }
 
+        /* Animated gradient background */
         .gradient-bg {
             position: fixed;
             top: 0;
@@ -281,6 +270,7 @@
             50% { opacity: 1; }
         }
 
+        /* Stars */
         .stars {
             position: fixed;
             top: 0;
@@ -296,19 +286,10 @@
             background: #ff3333;
             border-radius: 50%;
             box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
-            animation: starTwinkle 3s ease-in-out infinite, starFloat 10s linear infinite;
+            transition: all 0.3s ease-out;
         }
 
-        @keyframes starTwinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.5); }
-        }
-
-        @keyframes starFloat {
-            0% { transform: translateY(0) translateX(0); }
-            100% { transform: translateY(-100vh) translateX(50px); }
-        }
-
+        /* Animated Grid Pattern */
         .topo-lines {
             position: fixed;
             top: 0;
@@ -319,33 +300,70 @@
             z-index: 1;
             opacity: 0.15;
             overflow: hidden;
+            background-image: 
+                linear-gradient(rgba(255, 0, 0, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.3) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            perspective: 1000px;
+            transform-style: preserve-3d;
         }
 
-        .topo-line {
-            position: absolute;
-            width: 200%;
-            height: 2px;
-            background: var(--red);
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-            transform-origin: center;
-            animation: topoWave 20s ease-in-out infinite;
-        }
-
-        @keyframes topoWave {
-            0%, 100% { 
-                transform: translateX(-10%) skewY(0deg);
+        @keyframes gridMove {
+            0% { 
+                background-position: 0 0;
+                transform: translateY(0) perspective(1000px) rotateX(60deg);
             }
-            25% { 
-                transform: translateX(0%) skewY(2deg);
+            100% { 
+                background-position: 50px 50px;
+                transform: translateY(50px) perspective(1000px) rotateX(60deg);
+            }
+        }
+
+        /* Grid lines - vertical and horizontal */
+        .grid-line {
+            position: absolute;
+            background: var(--red);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+        }
+
+        .grid-line.vertical {
+            width: 1px;
+            height: 100%;
+            top: 0;
+            animation: gridPulseVertical 3s ease-in-out infinite;
+        }
+
+        .grid-line.horizontal {
+            height: 1px;
+            width: 100%;
+            left: 0;
+            animation: gridPulseHorizontal 3s ease-in-out infinite;
+        }
+
+        @keyframes gridPulseVertical {
+            0%, 100% { 
+                opacity: 0.3;
+                box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
             }
             50% { 
-                transform: translateX(10%) skewY(0deg);
-            }
-            75% { 
-                transform: translateX(0%) skewY(-2deg);
+                opacity: 0.8;
+                box-shadow: 0 0 20px rgba(255, 0, 0, 1);
             }
         }
 
+        @keyframes gridPulseHorizontal {
+            0%, 100% { 
+                opacity: 0.3;
+                box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            }
+            50% { 
+                opacity: 0.8;
+                box-shadow: 0 0 20px rgba(255, 0, 0, 1);
+            }
+        }
+
+        /* Navigation */
         .nav-container {
             position: fixed;
             top: 20px;
@@ -481,17 +499,19 @@
             box-shadow: 0 10px 50px rgba(88, 101, 242, 1);
         }
 
+        /* Main container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 120px 40px 60px;
+            padding: 100px 40px 40px;
             position: relative;
             z-index: 1;
         }
 
+        /* Hero Section */
         .hero {
             text-align: center;
-            padding: 40px 0 80px;
+            padding: 20px 0 40px;
             transform-style: preserve-3d;
         }
 
@@ -652,8 +672,9 @@
             box-shadow: 0 20px 60px rgba(255, 0, 0, 0.5);
         }
 
+        /* Section header */
         .section {
-            padding: 60px 0;
+            padding: 40px 0;
             display: none;
         }
 
@@ -675,7 +696,7 @@
 
         .section-header {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
             transform-style: preserve-3d;
         }
 
@@ -723,6 +744,7 @@
             }
         }
 
+        /* Premium cards */
         .premium-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -995,6 +1017,7 @@
             box-shadow: 0 15px 40px rgba(255, 0, 0, 0.6);
         }
 
+        /* Scripts grid */
         .scripts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -1196,159 +1219,9 @@
             50% { transform: scale(1.1); }
         }
 
-        .executor-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
         }
 
-        .executor-card {
-            background: rgba(10, 0, 0, 0.6);
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(255, 0, 0, 0.3);
-            border-radius: 25px;
-            padding: 30px;
-            transition: all 0.5s ease;
-            animation: executorFloat 6s ease-in-out infinite;
-            transform-style: preserve-3d;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .executor-card:nth-child(even) { animation-delay: 0.5s; }
-        .executor-card:nth-child(3n) { animation-delay: 1s; }
-
-        @keyframes executorFloat {
-            0%, 100% { transform: translateY(0px) rotateX(0deg); }
-            50% { transform: translateY(-15px) rotateX(3deg); }
-        }
-
-        .executor-card::before {
-            content: '';
-            position: absolute;
-            inset: -100%;
-            background: conic-gradient(from 0deg, transparent, rgba(255, 0, 0, 0.2), transparent);
-            animation: cardRotateBg 6s linear infinite;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-
-        .executor-card:hover {
-            transform: translateY(-25px) rotateX(5deg) scale(1.03);
-            border-color: var(--red);
-            box-shadow: 0 25px 70px rgba(255, 0, 0, 0.5);
-        }
-
-        .executor-card:hover::before { opacity: 1; }
-
-        .executor-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .executor-platform {
-            font-size: 14px;
-            font-family: 'Orbitron', sans-serif;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .executor-status {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 11px;
-            font-family: 'Orbitron', sans-serif;
-            padding: 5px 10px;
-            border-radius: 8px;
-        }
-
-        .executor-status.online {
-            background: rgba(0, 255, 0, 0.1);
-            color: #00ff00;
-        }
-
-        .executor-status.offline {
-            background: rgba(255, 0, 0, 0.1);
-            color: #ff0000;
-        }
-
-        .executor-name {
-            font-size: 28px;
-            font-weight: 700;
-            font-family: 'Orbitron', sans-serif;
-            margin-bottom: 15px;
-            animation: textGlow 2s ease-in-out infinite;
-            letter-spacing: 2px;
-        }
-
-        .executor-features {
-            list-style: none;
-            margin-bottom: 20px;
-        }
-
-        .executor-features li {
-            padding: 8px 0;
-            color: var(--text-secondary);
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .executor-features li::before {
-            content: '▸';
-            color: var(--red);
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        .executor-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, var(--red), var(--dark-red));
-            color: var(--text-primary);
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 15px;
-            font-family: 'Orbitron', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .executor-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transform: translateX(-100%);
-            animation: btnShimmer 3s infinite;
-        }
-
-        .executor-btn:hover {
-            transform: translateY(-8px) scale(1.05);
-            box-shadow: 0 12px 35px rgba(255, 0, 0, 0.5);
-        }
-
-        .executor-btn:disabled {
-            background: rgba(100, 100, 100, 0.3);
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
-
-        .executor-btn:disabled:hover {
-            transform: none;
-            box-shadow: none;
-        }
-
+        /* Live User Count */
         .user-count {
             position: fixed;
             top: 100px;
@@ -1405,6 +1278,7 @@
             font-weight: 700;
         }
 
+        /* Toast notification */
         .toast {
             position: fixed;
             bottom: 40px;
@@ -1453,7 +1327,37 @@
             font-size: 15px;
         }
 
+        /* Responsive */
         @media (max-width: 768px) {
+            /* Disable heavy animations on mobile */
+            .star, .topo-line, .gradient-bg, .nav-item, .btn {
+                animation: none !important;
+            }
+
+            /* Simplify floating animations */
+            .premium-card, .script-card, .executor-card {
+                animation: none !important;
+            }
+
+            /* Keep only essential animations */
+            .loading-title {
+                animation: loadingGradient 3s ease infinite;
+            }
+
+            .loading-bar {
+                animation: loadingBar 3s ease-in-out forwards;
+            }
+
+            .globe {
+                animation: globeRotate 30s linear infinite;
+            }
+
+            /* Reduce globe complexity on mobile */
+            .globe-container {
+                width: 200px;
+                height: 200px;
+            }
+
             .nav-container {
                 top: 0;
                 left: 0;
@@ -1470,7 +1374,6 @@
                 padding: 10px;
                 flex-wrap: wrap;
                 justify-content: center;
-                animation: none;
             }
 
             .discord-btn {
@@ -1520,20 +1423,24 @@
             }
 
             .premium-grid,
-            .scripts-grid,
-            .executor-grid {
+            .scripts-grid {
                 grid-template-columns: 1fr;
+            }
+
+            /* Reduce particle effects on mobile */
+            canvas {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
     <div id="loading-screen">
         <div class="loading-grid"></div>
         <h1 class="loading-title">CARBON</h1>
         <div class="globe-container">
             <div class="globe">
-                <div class="globe-ring"></div>
                 <div class="globe-ring"></div>
                 <div class="globe-ring"></div>
                 <div class="globe-ring"></div>
@@ -1546,17 +1453,26 @@
         <p class="loading-text">Initializing System...</p>
     </div>
 
+    <!-- Background -->
     <div class="gradient-bg"></div>
     <div class="stars" id="stars"></div>
     <div class="topo-lines" id="topoLines"></div>
 
+    <!-- Navigation -->
     <div class="nav-container">
         <nav>
-            <a href="#" class="nav-item active" data-page="home">🏠 HOME</a>
-            <a href="#" class="nav-item" data-page="premium">⚡ PREMIUM</a>
-            <a href="#" class="nav-item" data-page="scripts">💻 SCRIPTS</a>
-            <a href="#" class="nav-item" data-page="executors">⚡ EXECUTORS</a>
-            <a href="#" class="nav-item" onclick="window.open('https://rscripts.net/script/carbonstudios-GFR3', '_blank')">📜 RSCRIPTS</a>
+            <a href="#" class="nav-item active" data-page="home">
+                🏠 HOME
+            </a>
+            <a href="#" class="nav-item" data-page="premium">
+                ⚡ PREMIUM
+            </a>
+            <a href="#" class="nav-item" data-page="scripts">
+                💻 SCRIPTS
+            </a>
+            <a href="#" class="nav-item" onclick="window.open('https://rscripts.net/script/carbonstudios-GFR3', '_blank')">
+                📜 RSCRIPTS
+            </a>
         </nav>
         <div class="discord-btn" onclick="window.open('https://discord.gg/jeNrk3t5Cx', '_blank')">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
@@ -1565,6 +1481,7 @@
         </div>
     </div>
 
+    <!-- Live User Count -->
     <div class="user-count">
         <div class="user-count-dot"></div>
         <div class="user-count-text">
@@ -1572,25 +1489,35 @@
         </div>
     </div>
 
+    <!-- Main Content -->
     <div class="container">
+        <!-- Home Section -->
         <section class="section active" id="home">
             <div class="hero">
                 <h1 class="hero-title">CARBON</h1>
                 <p class="hero-subtitle">Premium Script Hub</p>
                 <div class="cta-group">
-                    <button class="btn btn-primary" data-page="scripts">💻 View Scripts</button>
-                    <button class="btn btn-secondary" data-page="premium">⚡ Get Premium</button>
-                    <button class="btn btn-secondary" onclick="window.open('https://rscripts.net/script/carbonstudios-GFR3', '_blank')">📜 Rscripts</button>
+                    <button class="btn btn-primary" data-page="scripts">
+                        💻 View Scripts
+                    </button>
+                    <button class="btn btn-secondary" data-page="premium">
+                        ⚡ Get Premium
+                    </button>
+                    <button class="btn btn-secondary" onclick="window.open('https://rscripts.net/script/carbonstudios-GFR3', '_blank')">
+                        📜 Rscripts
+                    </button>
                 </div>
             </div>
         </section>
 
+        <!-- Premium Section -->
         <section class="section" id="premium">
             <div class="section-header">
                 <h2 class="section-title">PREMIUM</h2>
                 <p class="section-subtitle">Choose Your Plan</p>
             </div>
             <div class="premium-grid">
+                <!-- Basic -->
                 <div class="premium-card">
                     <div class="card-icon">🌿</div>
                     <div class="card-name">BASIC</div>
@@ -1605,6 +1532,7 @@
                     <button class="card-btn" onclick="purchase('Basic - $1.99/month')">GET BASIC</button>
                 </div>
 
+                <!-- Plus -->
                 <div class="premium-card">
                     <div class="card-badge">MOST POPULAR</div>
                     <div class="card-icon">💜</div>
@@ -1620,6 +1548,7 @@
                     <button class="card-btn" onclick="purchase('Plus - $4.99/month')">GET PLUS</button>
                 </div>
 
+                <!-- Lifetime -->
                 <div class="premium-card">
                     <div class="card-badge" style="background: linear-gradient(135deg, #fbbf24, #f59e0b);">👑 BEST VALUE</div>
                     <div class="card-icon">⭐</div>
@@ -1639,6 +1568,7 @@
             </div>
         </section>
 
+        <!-- Scripts Section -->
         <section class="section" id="scripts">
             <div class="section-header">
                 <h2 class="section-title">SCRIPTS</h2>
@@ -1722,25 +1652,16 @@
             </div>
         </section>
 
-        <section class="section" id="executors">
-            <div class="section-header">
-                <h2 class="section-title">EXECUTORS</h2>
-                <p class="section-subtitle">Popular Roblox Executors</p>
-            </div>
-            <div id="executorsLoading" style="text-align: center; padding: 60px; color: var(--text-secondary); font-family: 'Orbitron', sans-serif;">
-                <div style="font-size: 48px; margin-bottom: 20px; animation: loadingPulse 1.5s ease-in-out infinite;">⚡</div>
-                <div style="font-size: 18px; letter-spacing: 2px;">LOADING EXECUTORS...</div>
-            </div>
-            <div class="executor-grid" id="executorGrid" style="display: none;"></div>
-        </section>
     </div>
 
+    <!-- Toast Notification -->
     <div class="toast" id="toast">
         <div class="toast-icon">✓</div>
         <div class="toast-text">Script copied to clipboard!</div>
     </div>
 
     <script>
+        // Loading screen
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const loadingScreen = document.getElementById('loading-screen');
@@ -1752,6 +1673,7 @@
             }, 3000);
         });
 
+        // Live User Count System - starts at 17.3K
         let userCount = 17300;
         const userCountEl = document.getElementById('userCount');
         
@@ -1771,6 +1693,7 @@
         
         updateUserCount();
 
+        // Particle system
         class Particle {
             constructor(x, y) {
                 this.x = x;
@@ -1810,7 +1733,8 @@
         let particles = [];
 
         document.addEventListener('click', (e) => {
-            for (let i = 0; i < 20; i++) {
+            if (isMobile) return; // Disable particles on mobile
+            for (let i = 0; i < 10; i++) {
                 particles.push(new Particle(e.clientX, e.clientY));
             }
         });
@@ -1831,33 +1755,82 @@
             canvas.height = window.innerHeight;
         });
 
+        // Create stars (reduced to 150 for better performance)
         const starsContainer = document.getElementById('stars');
-        for (let i = 0; i < 300; i++) {
+        const isMobile = window.innerWidth <= 768;
+        const starCount = isMobile ? 50 : 150;
+        const stars = [];
+        
+        for (let i = 0; i < starCount; i++) {
             const star = document.createElement('div');
             star.className = 'star';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 200 + '%';
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            star.style.left = x + 'px';
+            star.style.top = y + 'px';
             star.style.width = Math.random() * 3 + 1 + 'px';
             star.style.height = star.style.width;
-            star.style.animationDelay = Math.random() * 3 + 's';
-            star.style.animationDuration = (Math.random() * 15 + 10) + 's';
             starsContainer.appendChild(star);
+            stars.push({ element: star, baseX: x, baseY: y });
         }
 
-        const topoContainer = document.getElementById('topoLines');
-        for (let i = 0; i < 25; i++) {
+        // Cursor tracking for stars
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function updateStars() {
+            stars.forEach((star, i) => {
+                const dx = (mouseX - star.baseX) * 0.02;
+                const dy = (mouseY - star.baseY) * 0.02;
+                
+                star.element.style.transform = `translate(${dx}px, ${dy}px)`;
+                
+                // Twinkle based on distance to cursor
+                const distance = Math.sqrt(Math.pow(mouseX - star.baseX, 2) + Math.pow(mouseY - star.baseY, 2));
+                const opacity = Math.max(0.3, 1 - (distance / 1000));
+                star.element.style.opacity = opacity;
+            });
+            
+            requestAnimationFrame(updateStars);
+        }
+
+        if (!isMobile) {
+            updateStars();
+        }
+
+        // Create animated grid lines
+        const gridContainer = document.getElementById('topoLines');
+        const gridLineCount = isMobile ? 8 : 15;
+        
+        // Vertical lines
+        for (let i = 0; i < gridLineCount; i++) {
             const line = document.createElement('div');
-            line.className = 'topo-line';
-            line.style.top = (i * 4) + '%';
-            line.style.left = '-50%';
+            line.className = 'grid-line vertical';
+            line.style.left = ((i / gridLineCount) * 100) + '%';
             line.style.animationDelay = (i * 0.1) + 's';
-            line.style.animationDuration = (15 + (i % 5) * 2) + 's';
-            const waveOffset = Math.sin(i * 0.5) * 20;
-            line.style.transform = `translateY(${waveOffset}px)`;
-            topoContainer.appendChild(line);
+            line.style.animationDuration = (2 + (i % 3)) + 's';
+            gridContainer.appendChild(line);
         }
 
-        for (let i = 0; i < 6; i++) {
+        // Horizontal lines
+        for (let i = 0; i < gridLineCount; i++) {
+            const line = document.createElement('div');
+            line.className = 'grid-line horizontal';
+            line.style.top = ((i / gridLineCount) * 100) + '%';
+            line.style.animationDelay = (i * 0.15) + 's';
+            line.style.animationDuration = (2.5 + (i % 3)) + 's';
+            gridContainer.appendChild(line);
+        }
+
+        // Floating orbs (reduced)
+        const orbCount = isMobile ? 2 : 6;
+        
+        for (let i = 0; i < orbCount; i++) {
             const orb = document.createElement('div');
             orb.style.position = 'fixed';
             orb.style.width = Math.random() * 400 + 200 + 'px';
@@ -1871,8 +1844,12 @@
             orb.style.zIndex = '0';
             orb.style.left = Math.random() * 100 + '%';
             orb.style.top = Math.random() * 100 + '%';
-            orb.style.animation = `floatOrb ${Math.random() * 30 + 20}s ease-in-out infinite`;
-            orb.style.animationDelay = Math.random() * 10 + 's';
+            
+            if (!isMobile) {
+                orb.style.animation = `floatOrb ${Math.random() * 30 + 20}s ease-in-out infinite`;
+                orb.style.animationDelay = Math.random() * 10 + 's';
+            }
+            
             document.body.appendChild(orb);
         }
 
@@ -1887,14 +1864,17 @@
         `;
         document.head.appendChild(style);
 
+        // Navigation
         document.querySelectorAll('.nav-item[data-page], .btn[data-page]').forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
                 const page = item.getAttribute('data-page');
                 
                 const rect = item.getBoundingClientRect();
-                for (let i = 0; i < 30; i++) {
-                    particles.push(new Particle(rect.left + rect.width/2, rect.top + rect.height/2));
+                if (!isMobile) {
+                    for (let i = 0; i < 15; i++) {
+                        particles.push(new Particle(rect.left + rect.width/2, rect.top + rect.height/2));
+                    }
                 }
                 
                 document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
@@ -1907,6 +1887,7 @@
             });
         });
 
+        // Copy script
         const scriptCode = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/CStudios-Dev/csLoader.lua/main/CSLoader.lua"))()';
         
         function copyScript(btn) {
@@ -1916,8 +1897,10 @@
                 btn.classList.add('copied');
                 
                 const rect = btn.getBoundingClientRect();
-                for (let i = 0; i < 25; i++) {
-                    particles.push(new Particle(rect.left + rect.width/2, rect.top + rect.height/2));
+                if (!isMobile) {
+                    for (let i = 0; i < 15; i++) {
+                        particles.push(new Particle(rect.left + rect.width/2, rect.top + rect.height/2));
+                    }
                 }
                 
                 showToast('Script copied to clipboard!');
@@ -1929,11 +1912,13 @@
             });
         }
 
+        // Purchase
         function purchase(plan) {
             window.open('https://discord.gg/jeNrk3t5Cx', '_blank');
             showToast(`Opening Discord for ${plan}...`);
         }
 
+        // Toast notification
         function showToast(message) {
             const toast = document.getElementById('toast');
             const toastText = toast.querySelector('.toast-text');
@@ -1944,10 +1929,12 @@
             }, 3500);
         }
 
-        document.querySelectorAll('.premium-card, .script-card, .executor-card').forEach(card => {
+        // Hover effects for cards
+        document.querySelectorAll('.premium-card, .script-card').forEach(card => {
             card.addEventListener('mouseenter', (e) => {
+                if (isMobile) return; // Disable on mobile
                 const rect = card.getBoundingClientRect();
-                for (let i = 0; i < 10; i++) {
+                for (let i = 0; i < 5; i++) {
                     particles.push(new Particle(
                         rect.left + Math.random() * rect.width,
                         rect.top + Math.random() * rect.height
@@ -1955,93 +1942,6 @@
                 }
             });
         });
-
-        async function loadExecutors() {
-            const executorGrid = document.getElementById('executorGrid');
-            const loadingEl = document.getElementById('executorsLoading');
-            
-            try {
-                const response = await fetch('https://wearedevs.net/api/exploits');
-                const data = await response.json();
-                
-                loadingEl.style.display = 'none';
-                executorGrid.style.display = 'grid';
-                
-                if (!data || !data.exploits || data.exploits.length === 0) {
-                    executorGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-secondary); font-family: \'Orbitron\', sans-serif;">No executors available at the moment.</div>';
-                    return;
-                }
-                
-                const platformIcons = {
-                    'windows': '🖥️',
-                    'android': '📱',
-                    'ios': '🍎',
-                    'mac': '💻',
-                    'macos': '💻'
-                };
-                
-                data.exploits.forEach(executor => {
-                    const platformName = (executor.platform || 'windows').toLowerCase();
-                    const platformIcon = platformIcons[platformName] || '⚡';
-                    const isOnline = !executor.patched;
-                    
-                    const card = document.createElement('div');
-                    card.className = 'executor-card';
-                    
-                    let features = [];
-                    if (executor.description) {
-                        const desc = executor.description.toLowerCase();
-                        if (desc.includes('ui') || desc.includes('interface')) features.push('Modern UI');
-                        if (desc.includes('auto') || desc.includes('update')) features.push('Auto-Update');
-                        if (desc.includes('fast') || desc.includes('speed')) features.push('High Performance');
-                        if (desc.includes('free')) features.push('Free to Use');
-                    }
-                    
-                    if (features.length === 0) {
-                        features = ['Script Execution', 'Regular Updates', 'Active Community'];
-                    }
-                    
-                    card.innerHTML = `
-                        <div class="executor-header">
-                            <span class="executor-platform">${platformIcon} ${executor.platform || 'Windows'}</span>
-                            <div class="executor-status ${isOnline ? 'online' : 'offline'}">
-                                <div class="status-dot ${isOnline ? 'online' : 'offline'}"></div>
-                                ${isOnline ? 'ONLINE' : 'OFFLINE'}
-                            </div>
-                        </div>
-                        <div class="executor-name">${executor.name || 'Unknown'}</div>
-                        <ul class="executor-features">
-                            ${features.map(f => `<li>${f}</li>`).join('')}
-                        </ul>
-                        <button class="executor-btn" ${!isOnline ? 'disabled' : ''} onclick="window.open('${executor.download || 'https://wearedevs.net'}', '_blank')">
-                            ${isOnline ? 'DOWNLOAD' : 'PATCHED'}
-                        </button>
-                    `;
-                    
-                    executorGrid.appendChild(card);
-                    
-                    card.addEventListener('mouseenter', (e) => {
-                        const rect = card.getBoundingClientRect();
-                        for (let i = 0; i < 10; i++) {
-                            particles.push(new Particle(
-                                rect.left + Math.random() * rect.width,
-                                rect.top + Math.random() * rect.height
-                            ));
-                        }
-                    });
-                });
-                
-            } catch (error) {
-                console.error('Error loading executors:', error);
-                loadingEl.innerHTML = `
-                    <div style="font-size: 48px; margin-bottom: 20px;">⚠️</div>
-                    <div style="font-size: 18px; letter-spacing: 2px;">FAILED TO LOAD EXECUTORS</div>
-                    <div style="font-size: 14px; margin-top: 10px; opacity: 0.7;">Please check your connection or try again later</div>
-                `;
-            }
-        }
-        
-        loadExecutors();
     </script>
 </body>
 </html>
