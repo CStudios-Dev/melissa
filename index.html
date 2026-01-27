@@ -485,6 +485,19 @@
         <header>
             <h1>LOADSTRING GENERATOR</h1>
             <p class="subtitle">Transform your obfuscated code into loadstrings</p>
+            
+            <div style="background: var(--bg-secondary); border: 2px solid var(--accent-primary); border-radius: 10px; padding: 20px; margin: 20px auto; max-width: 800px; text-align: left;">
+                <div style="color: var(--accent-primary); font-weight: 700; margin-bottom: 10px; font-size: 1.1rem;">📋 HOW TO USE:</div>
+                <div style="color: var(--text-secondary); line-height: 1.8; font-size: 0.9rem;">
+                    <div style="margin-bottom: 8px;">1️⃣ Click the <strong style="color: var(--accent-primary);">+</strong> button to create a new script</div>
+                    <div style="margin-bottom: 8px;">2️⃣ Enter your <strong style="color: var(--accent-primary);">subdomain</strong> (e.g., scripts.yoursite.com)</div>
+                    <div style="margin-bottom: 8px;">3️⃣ Enter the <strong style="color: var(--accent-primary);">script filename</strong> (e.g., kings-legacy)</div>
+                    <div style="margin-bottom: 8px;">4️⃣ Paste your <strong style="color: var(--accent-primary);">obfuscated code</strong></div>
+                    <div style="margin-bottom: 8px;">5️⃣ Click <strong style="color: var(--success);">GENERATE LOADSTRING</strong></div>
+                    <div>6️⃣ Copy the loadstring and your code to upload to your subdomain!</div>
+                </div>
+            </div>
+            
             <div class="stats">
                 <div class="stat-box">
                     <span class="stat-label">Total Scripts:</span>
@@ -578,19 +591,34 @@
                 return;
             }
             
-            // Encode to base64
-            const base64Code = btoa(code);
+            // Get subdomain input
+            const subdomain = document.getElementById(`subdomain-${id}`).value || 'your-subdomain';
+            const scriptName = document.getElementById(`scriptname-${id}`).value || `script_${id}`;
             
-            // Generate the loadstring
-            const loadstring = `loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/script_${id}.lua"))()`;
-            
-            // Alternative with direct base64 decode
-            const loadstringAlt = `loadstring(game:HttpGet("data:text/plain;base64,${base64Code}"))()`;
+            // Generate the loadstring with subdomain
+            const loadstring = `loadstring(game:HttpGet("https://${subdomain}.com/${scriptName}.lua"))()`;
             
             script.code = code;
-            script.loadstring = loadstringAlt;
+            script.subdomain = subdomain;
+            script.scriptName = scriptName;
+            script.loadstring = loadstring;
             saveScripts();
             renderScripts();
+        }
+        
+        function copyCode(id, btnId) {
+            const code = document.getElementById(`code-${id}`).value;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.getElementById(btnId);
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                btn.classList.add('copied');
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
         }
         
         function copyToClipboard(text, btnId) {
@@ -622,11 +650,28 @@
                         <button class="delete-btn" onclick="deleteScript(${script.id})">DELETE</button>
                     </div>
                     
+                    <div class="input-group" style="margin-bottom: 15px;">
+                        <input 
+                            type="text" 
+                            class="input-field" 
+                            id="subdomain-${script.id}" 
+                            placeholder="Enter subdomain (e.g., scripts.yourdomain)"
+                            value="${script.subdomain || ''}"
+                            style="margin-bottom: 10px;"
+                        >
+                        <input 
+                            type="text" 
+                            class="input-field" 
+                            id="scriptname-${script.id}" 
+                            placeholder="Script filename (e.g., kings-legacy)"
+                            value="${script.scriptName || ''}"
+                        >
+                    </div>
+                    
                     <textarea 
                         class="code-input" 
                         id="code-${script.id}" 
                         placeholder="Paste your obfuscated code here..."
-                        onchange="generateLoadstring(${script.id})"
                     >${script.code}</textarea>
                     
                     ${script.loadstring ? `
@@ -634,14 +679,18 @@
                             <div class="output-label">🔗 LOADSTRING:</div>
                             <div class="output-code">${script.loadstring}</div>
                         </div>
-                        <button class="copy-btn" id="copy-${script.id}" onclick="copyToClipboard('${script.loadstring.replace(/'/g, "\\'")}', 'copy-${script.id}')">
-                            📋 COPY LOADSTRING
-                        </button>
-                    ` : `
-                        <button class="copy-btn" onclick="generateLoadstring(${script.id})">
-                            ⚡ GENERATE LOADSTRING
-                        </button>
-                    `}
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <button class="copy-btn" id="copy-loadstring-${script.id}" onclick="copyToClipboard('${script.loadstring.replace(/'/g, "\\'")}', 'copy-loadstring-${script.id}')">
+                                📋 COPY LOADSTRING
+                            </button>
+                            <button class="copy-btn" id="copy-code-${script.id}" onclick="copyCode(${script.id}, 'copy-code-${script.id}')" style="background: var(--accent-secondary);">
+                                📄 COPY CODE
+                            </button>
+                        </div>
+                    ` : ''}
+                    <button class="copy-btn" onclick="generateLoadstring(${script.id})" style="background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));">
+                        ⚡ ${script.loadstring ? 'REGENERATE' : 'GENERATE'} LOADSTRING
+                    </button>
                 `;
                 
                 container.appendChild(card);
